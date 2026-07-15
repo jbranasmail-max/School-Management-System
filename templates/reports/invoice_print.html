@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فاتورة {{ invoice.invoice_number }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+    <div class="print-shell">
+        <div class="print-actions">
+            <a class="btn btn-light" href="{% url 'finance_dashboard' %}">رجوع</a>
+            <button class="btn btn-primary" onclick="window.print()">طباعة الفاتورة</button>
+        </div>
+        <section class="print-sheet">
+            <h1>فاتورة مدرسية</h1>
+            <p class="muted">
+                {{ invoice.invoice_number }} • {{ invoice.title }} • تاريخ الاستحقاق {{ invoice.due_date|date:"Y-m-d" }}
+            </p>
+            <div class="stat-grid" style="margin-top:20px;">
+                <div class="panel stat-card">
+                    <h4>الطالب</h4>
+                    <strong>{{ invoice.student.name }}</strong>
+                    <p>{{ invoice.student.student_id }}</p>
+                </div>
+                <div class="panel stat-card">
+                    <h4>الإجمالي بعد الخصم</h4>
+                    <strong>{{ invoice.total_after_discount }}</strong>
+                    <p>الحالة: {{ invoice.get_status_display }}</p>
+                </div>
+                <div class="panel stat-card">
+                    <h4>المدفوع</h4>
+                    <strong>{{ invoice.paid_amount }}</strong>
+                    <p>المتبقي: {{ invoice.balance_due }}</p>
+                </div>
+            </div>
+            <div class="table-wrap" style="margin-top:20px;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>التاريخ</th>
+                            <th>الطريقة</th>
+                            <th>المبلغ</th>
+                            <th>المرجع</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in invoice.payments.all %}
+                            <tr>
+                                <td>{{ payment.payment_date|date:"Y-m-d" }}</td>
+                                <td>{{ payment.get_method_display }}</td>
+                                <td>{{ payment.amount }}</td>
+                                <td>{{ payment.reference_number|default:"-" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="4">لا توجد دفعات بعد.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

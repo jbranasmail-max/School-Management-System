@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}التسجيلات{% endblock %}
+{% block page_title %}التسجيلات الأكاديمية{% endblock %}
+{% block page_subtitle %}متابعة علاقة الطالب بالمادة مع الدرجة النهائية ونسبة الحضور في واجهة واحدة.{% endblock %}
+
+{% block content %}
+<section class="stat-grid fade-up">
+    <div class="panel stat-card">
+        <div class="icon"><i class="fa-solid fa-clipboard-list"></i></div>
+        <h4>إجمالي التسجيلات</h4>
+        <strong>{{ total_enrollments }}</strong>
+        <p>كل التسجيلات داخل المواد.</p>
+    </div>
+    <div class="panel stat-card">
+        <div class="icon"><i class="fa-solid fa-spinner"></i></div>
+        <h4>قيد الرصد</h4>
+        <strong>{{ active_enrollments }}</strong>
+        <p>تسجيلات لم تُعتمد درجاتها النهائية بعد.</p>
+    </div>
+    <div class="panel stat-card">
+        <div class="icon"><i class="fa-solid fa-check-double"></i></div>
+        <h4>مكتملة</h4>
+        <strong>{{ completed_enrollments }}</strong>
+        <p>سجلات مكتملة مع درجات نهائية.</p>
+    </div>
+    <div class="panel stat-card">
+        <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h4>متوسط الدرجات</h4>
+        <strong>{{ average_grade }}</strong>
+        <p>قراءة سريعة للأداء النهائي.</p>
+    </div>
+</section>
+
+<section class="panel fade-up" style="margin-top:20px;">
+    <div class="panel-header">
+        <div>
+            <h3 class="panel-title">سجل التسجيلات</h3>
+            <p class="panel-subtitle">قابل للتوسعة لاحقًا بجدول حصص ورسائل تنبيه.</p>
+        </div>
+        <a class="btn btn-primary" href="{% url 'enrollment_create' %}"><i class="fa-solid fa-plus"></i>تسجيل جديد</a>
+    </div>
+    <div class="panel-body">
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>الطالب</th>
+                        <th>المادة</th>
+                        <th>الأستاذ</th>
+                        <th>الدرجة</th>
+                        <th>الحضور</th>
+                        <th>الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for enrollment in enrollments %}
+                        <tr>
+                            <td>{{ enrollment.student.name }}</td>
+                            <td>{{ enrollment.course.name }}</td>
+                            <td>{{ enrollment.course.teacher.name|default:"-" }}</td>
+                            <td>{{ enrollment.grade|default:"قيد الرصد" }}</td>
+                            <td>{{ enrollment.attendance_percentage }}%</td>
+                            <td><span class="badge badge-primary">{{ enrollment.get_grade_status }}</span></td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="6" class="muted">لا توجد تسجيلات بعد.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

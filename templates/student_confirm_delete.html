@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}حذف {{ student.name }}{% endblock %}
+{% block page_title %}حذف طالب{% endblock %}
+{% block page_subtitle %}تأكيد نهائي قبل حذف السجل الطالب وكل ما يرتبط به من تسجيلات مباشرة.{% endblock %}
+
+{% block content %}
+<section class="panel form-card fade-up">
+    <div class="panel-body">
+        <div class="empty-state">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <h3>هل تريد حذف {{ student.name }}؟</h3>
+            <p class="muted">هذا الإجراء سيحذف السجل الأساسي للطالب من النظام.</p>
+        </div>
+        <form method="post" class="form-footer">
+            {% csrf_token %}
+            <a class="btn btn-light" href="{% url 'student_detail' student.pk %}">إلغاء</a>
+            <button class="btn btn-danger" type="submit">تأكيد الحذف</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

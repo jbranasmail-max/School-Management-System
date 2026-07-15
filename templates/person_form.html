@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block title %}
+إضافة شخص
+{% endblock %}
+
+
+{% block content %}
+
+<style>
+
+.person-form-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+.form-box{
+    background:#fff;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+
+.form-box label{
+    font-weight:600;
+    margin-bottom:10px;
+    display:block;
+}
+
+
+.form-box input,
+.form-box select,
+.form-box textarea{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+}
+
+
+.full-width{
+    grid-column:1/-1;
+}
+
+
+.action-box{
+    margin-top:30px;
+}
+
+
+@media(max-width:900px){
+
+.person-form-grid{
+    grid-template-columns:1fr;
+}
+
+}
+
+</style>
+
+
+
+<section class="panel fade-up">
+
+
+<div class="panel-header">
+
+<h3 class="panel-title">
+إضافة شخص جديد
+</h3>
+
+</div>
+
+
+
+<div class="panel-body">
+
+
+<form method="post">
+
+{% csrf_token %}
+
+
+
+<div class="person-form-grid">
+
+
+
+
+
+<!-- الاسم -->
+
+<div class="form-box">
+
+<label>
+الاسم
+</label>
+
+{{ form.name }}
+
+<br>
+
+<a href="{% url 'name_create' %}"
+class="btn btn-success">
+
+➕ إضافة اسم
+
+</a>
+
+</div>
+
+
+
+
+
+<!-- العنوان -->
+
+<div class="form-box">
+
+<label>
+العنوان
+</label>
+
+{{ form.address }}
+
+<br>
+
+<a href="{% url 'address_create' %}"
+class="btn btn-info">
+
+➕ إضافة عنوان
+
+</a>
+
+</div>
+
+
+
+
+
+
+<!-- البطاقة -->
+
+<div class="form-box">
+
+<label>
+البطاقة الشخصية
+</label>
+
+{{ form.national_id }}
+
+<br>
+
+<a href="{% url 'personal_id_create' %}"
+class="btn btn-warning">
+
+➕ إضافة بطاقة شخصية
+
+</a>
+
+</div>
+
+
+
+
+
+
+
+<!-- تاريخ الميلاد -->
+
+<div class="form-box">
+
+{{ form.date_of_birth.label_tag }}
+
+{{ form.date_of_birth }}
+
+</div>
+
+
+
+
+
+
+<!-- الجوال -->
+
+<div class="form-box">
+
+{{ form.phone.label_tag }}
+
+{{ form.phone }}
+
+</div>
+
+
+
+
+
+
+<!-- البريد -->
+
+<div class="form-box">
+
+{{ form.email.label_tag }}
+
+{{ form.email }}
+
+</div>
+
+
+<div class="form-box">
+
+{{ form.gender.label_tag }}
+
+{{ form.gender}}
+
+</div>
+
+
+
+<!-- الحالة المادية -->
+
+<div class="form-box">
+
+{{ form.status.label_tag }}
+
+{{ form.status }}
+
+</div>
+
+
+
+
+
+
+<!-- الحالة الاجتماعية قبل الأولاد -->
+
+<div class="form-box">
+
+{{ form.marital_status.label_tag }}
+
+{{ form.marital_status }}
+
+</div>
+
+
+
+
+
+
+<!-- الأولاد الذكور -->
+
+<div class="form-box">
+
+{{ form.male_children.label_tag }}
+
+{{ form.male_children }}
+
+</div>
+
+
+
+
+
+
+<!-- الأولاد الإناث -->
+
+<div class="form-box">
+
+{{ form.female_children.label_tag }}
+
+{{ form.female_children }}
+
+</div>
+
+
+
+
+
+
+
+<!-- الحالة الصحية -->
+
+<div class="form-box">
+
+{{ form.health_condition.label_tag }}
+
+{{ form.health_condition }}
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+<div class="action-box">
+
+
+<button class="btn btn-primary">
+
+حفظ
+
+</button>
+
+
+
+<a class="btn btn-light"
+href="{% url 'person_list' %}">
+
+إلغاء
+
+</a>
+
+
+</div>
+
+
+
+
+</form>
+
+
+</div>
+
+
+</section>
+
+
+{% endblock %}

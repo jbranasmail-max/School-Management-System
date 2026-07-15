@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+    {{ form.media }}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}نظام المدرسة المتكامل{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+    <div class="shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-mark"><i class="fa-solid fa-school"></i></div>
+                <div class="brand-copy">
+                    <h1>SchoolSphere</h1>
+                    <p>نظام مدرسة متكامل للأكاديمي والدرجات والمحاسبة</p>
+                </div>
+            </div>
+
+            <div class="nav-label">الواجهة الرئيسية</div>
+            <div class="nav-group">
+                {% if perms.myapp.view_student or user.is_superuser %}
+                    <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                        <span><i class="fa-solid fa-chart-pie"></i>لوحة القيادة</span>
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="nav-label">الإدارة الأكاديمية</div>
+            <div class="nav-group">
+                {% if perms.myapp.view_person or user.is_superuser %}
+    <a class="nav-link {% if 'person' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'person_list' %}">
+        <span>
+            <i class="fa-solid fa-users"></i>
+            الأشخاص
+        </span>
+        <i class="fa-solid fa-angle-left"></i>
+    </a>
+{% endif %}
+                {% if perms.myapp.view_student %}
+                    <a class="nav-link {% if 'student' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'student_list' %}">
+                        <span><i class="fa-solid fa-user-graduate"></i>الطلاب</span>
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+                {% endif %}
+                {% if perms.myapp.view_teacher %}
+                    <a class="nav-link {% if 'teacher' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'teacher_list' %}">
+                        <span><i class="fa-solid fa-chalkboard-user"></i>الأساتذة</span>
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+                {% endif %}
+                {% if perms.myapp.view_course %}
+                    <a class="nav-link {% if 'course' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'course_list' %}">
+                        <span><i class="fa-solid fa-book-open"></i>المواد</span>
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+                {% endif %}
+                {% if perms.myapp.view_enrollment %}
+                    <a class="nav-link {% if 'enrollment' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'enrollment_list' %}">
+                        <span><i class="fa-solid fa-clipboard-check"></i>التسجيلات</span>
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+                {% endif %}
+                {% if perms.myapp.view_attendancerecord %}
+                    <a class="nav-link {% if 'attendance' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'attendance_list' %}">
+                        <span><i class="fa-solid fa-calendar-check"></i>الحضور</span>
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="nav-label">التقييم والماليات</div>
+            <div class="nav-group">
+                {% if perms.myapp.view_assessment %}
+                    <a class="nav-link {% if 'assessment' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'assessment_list' %}">
+                        <span><i class="fa-solid fa-pen-ruler"></i>التقييمات</span>
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+                {% endif %}
+                {% if perms.myapp.view_graderecord %}
+                    <a class="nav-link {% if 'gradebook' in request.resolver_match.url_name or 'grade_record' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'gradebook_list' %}">
+                        <span><i class="fa-solid fa-square-poll-vertical"></i>الدرجات</span>
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+                {% endif %}
+                {% if perms.myapp.view_invoice %}
+                    <a class="nav-link {% if 'finance' in request.resolver_match.url_name or 'invoice' in request.resolver_match.url_name or 'payment' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'finance_dashboard' %}">
+                        <span><i class="fa-solid fa-wallet"></i>المحاسبة</span>
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">
+                <div class="page-intro">
+                    <h2>{% block page_title %}نظام المدرسة المتكامل{% endblock %}</h2>
+                    <p>{% block page_subtitle %}لوحة تشغيل موحدة لإدارة الطلاب والأساتذة والمواد والرسوم والتقييمات في مكان واحد.{% endblock %}</p>
+                </div>
+                <div class="topbar-meta">
+                    <div class="meta-pill"><i class="fa-regular fa-calendar"></i><span data-live-date></span></div>
+                    <a class="meta-pill" href="/admin/"><i class="fa-solid fa-shield-halved"></i><span>لوحة الإدارة</span></a>
+                    {% if user.is_authenticated %}
+                        <div class="meta-pill"><i class="fa-solid fa-user"></i><span>{{ user.username }}</span></div>
+                        <a class="meta-pill" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i><span>خروج</span></a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if messages %}
+                <div class="alert-stack">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

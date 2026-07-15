@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}{{ student.name }}{% endblock %}
+{% block page_title %}ملف الطالب{% endblock %}
+{% block page_subtitle %}عرض موحد للسجل الأكاديمي والمالي وسجل التقييمات والحضور للطالب.{% endblock %}
+
+{% block content %}
+<section class="hero fade-up">
+    <div class="hero-grid">
+        <div>
+            <h3>{{ student.name }}</h3>
+            <p>
+                رقم الطالب {{ student.student_id }}{% if student.school_class %} • {{ student.school_class.name }}{% endif %}
+                {% if student.guardian %} • ولي الأمر: {{ student.guardian.name }}{% endif %}
+            </p>
+            <div class="hero-actions">
+                <a class="btn btn-primary" href="{% url 'student_update' student.pk %}"><i class="fa-solid fa-pen"></i>تعديل</a>
+                <a class="btn btn-secondary" href="{% url 'report_card' student.pk %}"><i class="fa-solid fa-print"></i>كشف الدرجات</a>
+                <a class="btn btn-secondary" href="{% url 'student_list' %}"><i class="fa-solid fa-arrow-right"></i>الرجوع للقائمة</a>
+            </div>
+        </div>
+        <div class="stat-grid">
+            <div class="panel stat-card">
+                <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+                <h4>متوسط الدرجات</h4>
+                <strong>{{ average_grade }}</strong>
+                <p>متوسط سريع من آخر السجلات المرصودة.</p>
+            </div>
+            <div class="panel stat-card">
+                <div class="icon"><i class="fa-solid fa-wallet"></i></div>
+                <h4>إجمالي المدفوع</h4>
+                <strong>{{ total_paid }}</strong>
+                <p>إجمالي المدفوعات المرتبطة بآخر الفواتير.</p>
+            </div>
+            <div class="panel stat-card">
+                <div class="icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                <h4>المتبقي</h4>
+                <strong>{{ total_due }}</strong>
+                <p>رصيد مستحق يحتاج متابعة من الإدارة المالية.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-grid">
+    <div class="panel fade-up">
+        <div class="panel-header">
+            <div>
+                <h3 class="panel-title">المواد والتسجيلات</h3>
+                <p class="panel-subtitle">المواد المسجل فيها الطالب مع الأستاذ والدرجة النهائية.</p>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>المادة</th>
+                            <th>الأستاذ</th>
+                            <th>الدرجة</th>
+                            <th>الحضور</th>
+                            <th>الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for enrollment in enrollments %}
+                            <tr>
+                                <td>{{ enrollment.course.name }}</td>
+                                <td>{{ enrollment.course.teacher.name|default:"غير محدد" }}</td>
+                                <td>{{ enrollment.grade|default:"قيد الرصد" }}</td>
+                                <td>{{ enrollment.attendance_percentage }}%</td>
+                                <td><span class="badge badge-primary">{{ enrollment.get_grade_status }}</span></td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="5" class="muted">لا توجد تسجيلات بعد.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel fade-up">
+        <div class="panel-header">
+            <div>
+                <h3 class="panel-title">الحضور</h3>
+                <p class="panel-subtitle">ملخص آخر حالات الحضور المسجلة.</p>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="list-stack">
+                {% for item in attendance_summary %}
+                    <div class="list-item">
+                        <strong>{{ item.status }}</strong>
+                        <span class="badge badge-dark">{{ item.count }}</span>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <p>لا يوجد حضور مسجل لهذا الطالب بعد.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-grid">
+    <div class="panel fade-up">
+        <div class="panel-header">
+            <div>
+                <h3 class="panel-title">آخر الدرجات المرصودة</h3>
+                <p class="panel-subtitle">نتائج الاختبارات والواجبات والمشاريع.</p>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="list-stack">
+                {% for record in grade_records %}
+                    <div class="list-item">
+                        <div>
+                            <strong>{{ record.assessment.title }}</strong>
+                            <div class="muted tiny">{{ record.assessment.course.name }} • {{ record.graded_at|date:"Y-m-d" }}</div>
+                        </div>
+                        <div class="inline-actions">
+                            <span class="badge badge-success">{{ record.score }}</span>
+                            <span class="badge badge-primary">{{ record.status }}</span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-square-poll-vertical"></i>
+                        <p>لا توجد درجات مرصودة بعد.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="panel fade-up">
+        <div class="panel-header">
+            <div>
+                <h3 class="panel-title">الفواتير</h3>
+                <p class="panel-subtitle">آخر الفواتير المرتبطة بالطالب.</p>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="list-stack">
+                {% for invoice in invoices %}
+                    <div class="list-item">
+                        <div>
+                            <strong>{{ invoice.title }}</strong>
+                            <div class="muted tiny">استحقاق {{ invoice.due_date|date:"Y-m-d" }}</div>
+                        </div>
+                        <div class="inline-actions">
+                            <span class="badge badge-warning">المتبقي {{ invoice.balance_due }}</span>
+                            <span class="badge badge-dark">{{ invoice.get_status_display }}</span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <p>لا توجد فواتير مرتبطة بهذا الطالب.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

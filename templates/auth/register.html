@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب جديد</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+    <div class="auth-shell">
+        <div class="auth-card fade-up">
+            <div class="brand" style="color:var(--text); margin-bottom:18px;">
+                <div class="brand-mark"><i class="fa-solid fa-user-plus"></i></div>
+                <div class="brand-copy">
+                    <h1 style="margin:0; color:var(--text)">إنشاء حساب جديد</h1>
+                    <p style="color:var(--text-soft)">سجل حسابك الآن ليتم حفظ بياناتك في قاعدة البيانات.</p>
+                </div>
+            </div>
+
+            {% if form.errors %}
+                <div class="alert alert-error">يوجد خطأ في بيانات التسجيل. تأكد من تعبئة الحقول بشكل صحيح.</div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-layout" style="grid-template-columns:1fr;">
+                    {% for field in form %}
+                        <div class="field-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="form-footer">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa-solid fa-check"></i>
+                        تسجيل
+                    </button>
+                    <a class="btn btn-secondary" href="{% url 'login' %}">العودة إلى تسجيل الدخول</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

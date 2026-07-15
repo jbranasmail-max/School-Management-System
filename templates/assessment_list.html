@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}التقييمات{% endblock %}
+{% block page_title %}إدارة التقييمات{% endblock %}
+{% block page_subtitle %}تنظيم الاختبارات والواجبات والمشاريع مع الأوزان النسبية والمواعيد بشكل واضح وقابل للتوسع.{% endblock %}
+
+{% block content %}
+<section class="panel fade-up">
+    <div class="panel-header">
+        <div>
+            <h3 class="panel-title">خطة التقييم</h3>
+            <p class="panel-subtitle">كل تقييم مرتبط مباشرة بالمادة ويسهل رصد درجاته لاحقًا.</p>
+        </div>
+        <a class="btn btn-primary" href="{% url 'assessment_create' %}"><i class="fa-solid fa-plus"></i>إضافة تقييم</a>
+    </div>
+    <div class="panel-body">
+        <div class="list-stack">
+            {% for assessment in assessments %}
+                <div class="list-item">
+                    <div>
+                        <strong>{{ assessment.title }}</strong>
+                        <div class="muted tiny">
+                            {{ assessment.course.name }} • {{ assessment.get_assessment_type_display }} • {{ assessment.get_term_display }}
+                        </div>
+                    </div>
+                    <div class="inline-actions">
+                        <span class="badge badge-primary">وزن {{ assessment.weight }}%</span>
+                        <span class="badge badge-warning">{{ assessment.due_date|date:"Y-m-d" }}</span>
+                        <span class="badge badge-dark">{{ assessment.grades_count }} درجات</span>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state">
+                    <i class="fa-solid fa-pen-ruler"></i>
+                    <p>لا توجد تقييمات حتى الآن.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

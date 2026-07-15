@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}بيانات الأستاذ{% endblock %}
+
+{% block content %}
+
+<section class="panel">
+
+<h3>
+{{ teacher.name }}
+</h3>
+
+<p>
+نوع المعلم:
+{{ teacher.get_teacher_type_display }}
+</p>
+
+<p>
+المؤهل:
+{{ teacher.qualification }}
+</p>
+
+<p>
+سنوات الخبرة:
+{{ teacher.experience_years }}
+</p>
+
+<p>
+الراتب:
+{{ teacher.salary }}
+</p>
+
+<p>
+الحالة:
+{{ teacher.get_status_display }}
+</p>
+
+</section>
+
+{% endblock %}

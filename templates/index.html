@@ -1,0 +1,1121 @@
+{% extends "base.html" %}
+
+{% block title %}لوحة القيادة{% endblock %}
+
+{% block page_title %}
+لوحة القيادة المدرسية
+{% endblock %}
+
+{% block page_subtitle %}
+نظام إدارة مدرسي متكامل لمتابعة الطلاب، المعلمين، الأداء الأكاديمي والجانب المالي.
+{% endblock %}
+
+
+{% block content %}
+
+<style>
+
+.dashboard-wrapper{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+    direction:rtl;
+}
+
+
+/* Hero */
+
+.dashboard-hero{
+    background:linear-gradient(135deg,#2563eb,#1e40af);
+    color:white;
+    border-radius:24px;
+    padding:35px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+}
+
+
+.hero-content{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+
+.hero-icon{
+    width:70px;
+    height:70px;
+    border-radius:20px;
+    background:rgba(255,255,255,.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+}
+
+
+.dashboard-hero h2{
+    margin:0 0 10px;
+    font-size:28px;
+}
+
+
+.dashboard-hero p{
+    margin:0;
+    opacity:.9;
+    max-width:650px;
+}
+
+
+.hero-actions{
+    display:flex;
+    gap:12px;
+}
+
+
+
+/* Cards */
+
+.dashboard-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+
+.dashboard-card{
+
+    background:white;
+    padding:25px;
+    border-radius:22px;
+
+    display:flex;
+    align-items:center;
+    gap:18px;
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+
+.dashboard-card:hover{
+    transform:translateY(-5px);
+}
+
+
+.card-icon{
+
+    width:55px;
+    height:55px;
+    border-radius:18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:24px;
+
+    background:#eef2ff;
+    color:#2563eb;
+
+}
+
+
+
+.dashboard-card span{
+    color:#64748b;
+    font-size:14px;
+}
+
+
+.dashboard-card h2{
+    margin:5px 0 0;
+    font-size:28px;
+}
+
+
+
+
+.blue .card-icon{
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+
+.green .card-icon{
+    background:#dcfce7;
+    color:#16a34a;
+}
+
+
+.purple .card-icon{
+    background:#f3e8ff;
+    color:#9333ea;
+}
+
+
+.orange .card-icon{
+    background:#ffedd5;
+    color:#ea580c;
+}
+
+
+
+/* Buttons */
+
+.btn{
+    border-radius:12px;
+    padding:10px 18px;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:.3s;
+}
+
+
+.btn-primary{
+    background:white;
+    color:#2563eb;
+}
+
+
+.btn-secondary{
+    background:rgba(255,255,255,.2);
+    color:white;
+}
+
+
+.btn-light{
+
+    background:#f1f5f9;
+    color:#334155;
+
+}
+
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+
+
+
+/* Panels */
+
+.dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(350px,1fr));
+
+    gap:25px;
+
+}
+
+
+
+.dashboard-panel{
+
+    background:white;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,.08);
+
+}
+
+
+
+.panel-title{
+
+    padding:22px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    border-bottom:1px solid #eee;
+
+}
+
+
+
+.panel-title h3{
+
+    margin:0;
+
+}
+
+
+
+.panel-title p{
+
+    margin:5px 0 0;
+
+    color:#64748b;
+
+    font-size:14px;
+
+}
+
+
+
+.panel-content{
+
+    padding:20px;
+
+}
+
+
+
+
+
+.modern-list-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    margin-bottom:12px;
+
+    background:#f8fafc;
+
+}
+
+
+
+
+
+.student-info{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+
+
+.avatar{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:bold;
+
+}
+
+
+
+.modern-list-item small{
+
+    display:block;
+
+    color:#64748b;
+
+    margin-top:5px;
+
+}
+
+
+
+
+
+.badge{
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    background:#dbeafe;
+
+    color:#2563eb;
+
+    font-size:13px;
+
+}
+
+
+.badge.dark{
+
+    background:#334155;
+
+    color:white;
+
+}
+
+
+.badge.success{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+}
+
+
+.badge.warning{
+
+    background:#fef3c7;
+
+    color:#b45309;
+
+}
+
+
+
+
+.empty-state{
+
+    text-align:center;
+
+    padding:30px;
+
+    color:#64748b;
+
+}
+
+
+
+.fade-up{
+
+    animation:fade .5s ease;
+
+}
+
+
+
+@keyframes fade{
+
+from{
+
+opacity:0;
+
+transform:translateY(20px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:none;
+
+}
+
+}
+
+
+
+@media(max-width:768px){
+
+.dashboard-hero{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+
+.hero-actions{
+
+flex-wrap:wrap;
+
+}
+
+
+.dashboard-grid{
+
+grid-template-columns:1fr;
+
+}
+
+
+}
+
+
+</style>
+
+
+
+<div class="dashboard-wrapper">
+
+
+<section class="dashboard-hero fade-up">
+
+
+<div class="hero-content">
+
+<div class="hero-icon">
+<i class="fa-solid fa-school"></i>
+</div>
+
+
+<div>
+
+<h2>
+مركز التحكم المدرسي
+</h2>
+
+
+<p>
+إدارة شاملة للطلاب والمعلمين والمواد والتقييمات والجانب المالي.
+</p>
+
+
+</div>
+
+</div>
+
+
+
+<div class="hero-actions">
+
+<a class="btn btn-primary"
+href="{% url 'student_create' %}">
+<i class="fa-solid fa-user-plus"></i>
+إضافة طالب
+</a>
+
+
+<a class="btn btn-secondary"
+href="{% url 'invoice_create' %}">
+<i class="fa-solid fa-file-invoice-dollar"></i>
+إصدار فاتورة
+</a>
+
+
+</div>
+
+
+</section>
+
+
+
+<section class="dashboard-cards fade-up">
+
+
+<div class="dashboard-card blue">
+
+<div class="card-icon">
+<i class="fa-solid fa-users"></i>
+</div>
+
+<div>
+
+<span>الطلاب</span>
+
+<h2>
+{{ total_students }}
+</h2>
+
+</div>
+
+</div>
+
+
+
+<div class="dashboard-card green">
+
+<div class="card-icon">
+<i class="fa-solid fa-chalkboard-user"></i>
+</div>
+
+<div>
+
+<span>الأساتذة</span>
+
+<h2>
+{{ total_teachers }}
+</h2>
+
+</div>
+
+</div>
+
+
+
+<div class="dashboard-card purple">
+
+<div class="card-icon">
+<i class="fa-solid fa-book-open"></i>
+</div>
+
+<div>
+
+<span>المواد</span>
+
+<h2>
+{{ total_courses }}
+</h2>
+
+</div>
+
+</div>
+
+
+
+<div class="dashboard-card orange">
+
+<div class="card-icon">
+<i class="fa-solid fa-wallet"></i>
+</div>
+
+<div>
+
+<span>المستحقات</span>
+
+<h2>
+{{ outstanding_balance }}
+</h2>
+
+</div>
+
+</div>
+
+
+</section>
+<!-- Secondary Statistics -->
+
+<section class="dashboard-cards fade-up">
+
+
+<div class="dashboard-card">
+
+<div class="card-icon">
+<i class="fa-solid fa-door-open"></i>
+</div>
+
+<div>
+<span>الفصول الدراسية</span>
+<h2>{{ total_classes }}</h2>
+</div>
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+<div class="card-icon">
+<i class="fa-solid fa-pen-ruler"></i>
+</div>
+
+<div>
+<span>التقييمات</span>
+<h2>{{ total_assessments }}</h2>
+</div>
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+<div class="card-icon">
+<i class="fa-solid fa-chart-column"></i>
+</div>
+
+<div>
+<span>متوسط الدرجات</span>
+<h2>{{ average_grade }}</h2>
+</div>
+
+</div>
+
+
+
+<div class="dashboard-card">
+
+<div class="card-icon">
+<i class="fa-solid fa-calendar-day"></i>
+</div>
+
+<div>
+<span>اليوم</span>
+<h2>{{ today|date:"Y-m-d" }}</h2>
+</div>
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- Main Data -->
+
+<section class="dashboard-grid fade-up">
+
+
+<!-- Recent Students -->
+
+<div class="dashboard-panel">
+
+
+<div class="panel-title">
+
+<div>
+
+<h3>
+آخر الطلاب المضافين
+</h3>
+
+<p>
+ملخص سريع للطلاب الجدد
+</p>
+
+</div>
+
+
+<a class="btn btn-light" href="{% url 'student_list' %}">
+جميع الطلاب
+</a>
+
+
+</div>
+
+
+
+<div class="panel-content">
+
+
+{% for student in recent_students %}
+
+
+<div class="modern-list-item">
+
+
+<div class="student-info">
+
+
+<div class="avatar">
+{{ student.name|slice:":1" }}
+</div>
+
+
+<div>
+
+<strong>
+{{ student.name }}
+</strong>
+
+
+<small>
+
+{{ student.student_id }}
+
+{% if student.school_class %}
+-
+{{ student.school_class.name }}
+{% endif %}
+
+</small>
+
+
+</div>
+
+
+</div>
+
+
+
+<div>
+
+
+<span class="badge">
+الصف {{ student.level }}
+</span>
+
+
+<span class="badge dark">
+{{ student.get_status_display }}
+</span>
+
+
+</div>
+
+
+</div>
+
+
+{% empty %}
+
+
+<div class="empty-state">
+
+<i class="fa-solid fa-user-graduate"></i>
+
+<p>
+لا يوجد طلاب حتى الآن
+</p>
+
+</div>
+
+
+{% endfor %}
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- Students By Level -->
+
+
+<div class="dashboard-panel">
+
+
+<div class="panel-title">
+
+<div>
+
+<h3>
+توزيع الطلاب حسب الصف
+</h3>
+
+
+<p>
+إحصائية توزيع الطلاب
+</p>
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="panel-content">
+
+
+{% for item in students_by_level %}
+
+
+<div class="modern-list-item">
+
+
+<strong>
+الصف {{ item.level }}
+</strong>
+
+
+<span class="badge success">
+{{ item.count }} طالب
+</span>
+
+
+</div>
+
+
+{% empty %}
+
+
+<div class="empty-state">
+
+<i class="fa-solid fa-chart-pie"></i>
+
+<p>
+لا توجد بيانات
+</p>
+
+</div>
+
+
+{% endfor %}
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- Assessments And Payments -->
+
+
+<section class="dashboard-grid fade-up">
+
+
+
+<!-- Assessments -->
+
+
+<div class="dashboard-panel">
+
+
+<div class="panel-title">
+
+
+<div>
+
+<h3>
+آخر التقييمات
+</h3>
+
+
+<p>
+متابعة الاختبارات والواجبات
+</p>
+
+
+</div>
+
+
+<a class="btn btn-light" href="{% url 'assessment_list' %}">
+إدارة
+</a>
+
+
+</div>
+
+
+
+
+<div class="panel-content">
+
+
+
+{% for assessment in recent_assessments %}
+
+
+
+<div class="modern-list-item">
+
+
+<div>
+
+
+<strong>
+{{ assessment.title }}
+</strong>
+
+
+<small>
+
+{{ assessment.course.name }}
+
+-
+
+{{ assessment.get_assessment_type_display }}
+
+</small>
+
+
+</div>
+
+
+
+<span class="badge warning">
+
+{{ assessment.due_date|date:"Y-m-d" }}
+
+</span>
+
+
+
+</div>
+
+
+
+{% empty %}
+
+
+<div class="empty-state">
+
+<i class="fa-solid fa-pen-ruler"></i>
+
+<p>
+لا توجد تقييمات
+</p>
+
+
+</div>
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- Payments -->
+
+
+<div class="dashboard-panel">
+
+
+<div class="panel-title">
+
+
+<div>
+
+<h3>
+آخر المدفوعات
+</h3>
+
+
+<p>
+الحركة المالية الأخيرة
+</p>
+
+
+</div>
+
+
+
+<a class="btn btn-light" href="{% url 'finance_dashboard' %}">
+المحاسبة
+</a>
+
+
+</div>
+
+
+
+
+<div class="panel-content">
+
+
+
+{% for payment in recent_payments %}
+
+
+
+<div class="modern-list-item">
+
+
+<div>
+
+
+<strong>
+{{ payment.invoice.student.name }}
+</strong>
+
+
+<small>
+
+{{ payment.invoice.title }}
+
+-
+
+{{ payment.get_method_display }}
+
+</small>
+
+
+</div>
+
+
+
+<span class="badge success">
+
+{{ payment.amount }}
+
+</span>
+
+
+
+</div>
+
+
+
+{% empty %}
+
+
+<div class="empty-state">
+
+<i class="fa-solid fa-wallet"></i>
+
+<p>
+لا توجد مدفوعات مسجلة
+</p>
+
+
+</div>
+
+
+{% endfor %}
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+</div>
+
+
+{% endblock %}

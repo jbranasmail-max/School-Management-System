@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كشف درجات {{ student.name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+    <div class="print-shell">
+        <div class="print-actions">
+            <a class="btn btn-light" href="{% url 'student_detail' student.pk %}">رجوع</a>
+            <button class="btn btn-primary" onclick="window.print()">طباعة كشف الدرجات</button>
+        </div>
+        <section class="print-sheet">
+            <h1>كشف درجات الطالب</h1>
+            <p class="muted">
+                {{ student.name }} • {{ student.student_id }} • الصف {{ student.level }}
+                {% if student.school_class %} • {{ student.school_class.name }}{% endif %}
+            </p>
+            <p class="muted">
+                ولي الأمر: {{ student.guardian.name|default:"غير محدد" }} • الرصيد المالي المتبقي: {{ invoice_balance }}
+            </p>
+            <div class="table-wrap" style="margin-top:20px;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>المادة</th>
+                            <th>التقييم</th>
+                            <th>الدرجة</th>
+                            <th>النسبة</th>
+                            <th>ملاحظات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                            <tr>
+                                <td>{{ record.assessment.course.name }}</td>
+                                <td>{{ record.assessment.title }}</td>
+                                <td>{{ record.score }} / {{ record.assessment.max_score }}</td>
+                                <td>{{ record.percentage }}%</td>
+                                <td>{{ record.feedback|default:"-" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="5">لا توجد درجات مرصودة.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top:20px;">
+                <strong>المتوسط العام: {{ average_score }}</strong>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

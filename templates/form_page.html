@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block page_subtitle %}{{ subtitle }}{% endblock %}
+
+{% block content %}
+
+<style>
+
+.form-layout{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:22px;
+    align-items:start;
+}
+
+.field-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.field-group.field-span-2{
+    grid-column:span 2;
+}
+
+.field-group.field-span-3{
+    grid-column:span 3;
+}
+
+.field-group label{
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.field-group input,
+.field-group select,
+.field-group textarea{
+    width:100%;
+}
+
+.field-group textarea{
+    min-height:120px;
+}
+
+.field-with-button{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.field-with-button .django-select2,
+.field-with-button select,
+.field-with-button input{
+    flex:1;
+}
+
+.form-footer{
+    margin-top:30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+@media(max-width:1100px){
+
+.form-layout{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media(max-width:700px){
+
+.form-layout{
+grid-template-columns:1fr;
+}
+
+.field-group.field-span-2,
+.field-group.field-span-3{
+grid-column:auto;
+}
+
+.field-with-button{
+flex-direction:column;
+align-items:stretch;
+}
+
+}
+
+</style>
+
+<section class="panel form-card fade-up">
+
+    <div class="panel-header">
+
+        <div>
+
+            <h3 class="panel-title">
+                {{ title }}
+            </h3>
+
+            <p class="panel-subtitle">
+                {{ subtitle }}
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="panel-body">
+
+        {% if meta_note %}
+        <div class="form-note">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>{{ meta_note }}</span>
+        </div>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <p class="field-error">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="form-layout">
+
+                {% for field in form %}
+
+                <div class="field-group
+                    {% if field.errors %}has-error{% endif %}
+                    {% if field.name == 'address' or field.name == 'notes' or field.name == 'instructions' or field.name == 'feedback' %}
+                    field-span-3
+                    {% endif %}">
+
+                    <label for="{{ field.id_for_label }}">
+
+                        {{ field.label }}
+
+                        {% if field.field.required %}
+                            <span class="tiny" style="color:red">*</span>
+                        {% endif %}
+
+                    </label>
+
+                    {% if field.name == "guardian" %}
+
+                        <div class="field-with-button">
+
+                            {{ field }}
+
+                            <a href="{% url 'guardian_create' %}"
+                               class="btn btn-success">
+
+                                <i class="fa-solid fa-plus"></i>
+
+                                إضافة ولي أمر
+
+                            </a>
+
+                        </div>
+
+                    {% else %}
+
+                        {{ field }}
+
+                    {% endif %}
+
+                    {% if field.help_text %}
+                        <p class="field-help">
+                            {{ field.help_text }}
+                        </p>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        <p class="field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="form-footer">
+
+                <a class="btn btn-light"
+                   href="{% url back_url %}">
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    رجوع
+
+                </a>
+
+                <button class="btn btn-primary"
+                        type="submit">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    حفظ البيانات
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

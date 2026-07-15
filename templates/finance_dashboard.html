@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}المحاسبة{% endblock %}
+{% block page_title %}المحاسبة المدرسية{% endblock %}
+{% block page_subtitle %}إدارة الرسوم والفواتير والدفعات والخصومات داخل لوحة مالية موحدة وواضحة بصريًا.{% endblock %}
+
+{% block content %}
+<section class="stat-grid fade-up">
+    <div class="panel stat-card">
+        <div class="icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+        <h4>إجمالي الفوترة</h4>
+        <strong>{{ total_billed }}</strong>
+        <p>القيمة الإجمالية لكل الفواتير الصادرة.</p>
+    </div>
+    <div class="panel stat-card">
+        <div class="icon"><i class="fa-solid fa-percent"></i></div>
+        <h4>إجمالي الخصومات</h4>
+        <strong>{{ total_discount }}</strong>
+        <p>خصومات مطبقة على الرسوم.</p>
+    </div>
+    <div class="panel stat-card">
+        <div class="icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+        <h4>المدفوع</h4>
+        <strong>{{ total_paid }}</strong>
+        <p>إجمالي المقبوضات المسجلة في النظام.</p>
+    </div>
+    <div class="panel stat-card">
+        <div class="icon"><i class="fa-solid fa-hourglass-half"></i></div>
+        <h4>المتبقي</h4>
+        <strong>{{ total_due }}</strong>
+        <p>{{ overdue_count }} فواتير متأخرة تحتاج متابعة.</p>
+    </div>
+</section>
+
+<section class="section-grid" style="margin-top:20px;">
+    <div class="panel fade-up">
+        <div class="panel-header">
+            <div>
+                <h3 class="panel-title">الفواتير</h3>
+                <p class="panel-subtitle">آخر 20 فاتورة مع الرصيد المتبقي لكل طالب.</p>
+            </div>
+            <a class="btn btn-primary" href="{% url 'invoice_create' %}"><i class="fa-solid fa-plus"></i>إصدار فاتورة</a>
+        </div>
+        <div class="panel-body">
+            <div class="list-stack">
+                {% for invoice in invoices %}
+                    <div class="list-item">
+                        <div>
+                            <strong>{{ invoice.title }}</strong>
+                            <div class="muted tiny">{{ invoice.invoice_number }} • {{ invoice.student.name }} • {{ invoice.due_date|date:"Y-m-d" }}</div>
+                        </div>
+                        <div class="inline-actions">
+                            <span class="badge badge-warning">المتبقي {{ invoice.balance_due }}</span>
+                            <span class="badge badge-dark">{{ invoice.get_status_display }}</span>
+                            <a class="btn btn-light" href="{% url 'invoice_print' invoice.pk %}">طباعة</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <p>لا توجد فواتير بعد.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="panel fade-up">
+        <div class="panel-header">
+            <div>
+                <h3 class="panel-title">الدفعات الأخيرة</h3>
+                <p class="panel-subtitle">تدفق يومي للمدفوعات المسجلة.</p>
+            </div>
+            <a class="btn btn-primary" href="{% url 'payment_create' %}"><i class="fa-solid fa-plus"></i>تسجيل دفعة</a>
+        </div>
+        <div class="panel-body">
+            <div class="list-stack">
+                {% for payment in recent_payments %}
+                    <div class="list-item">
+                        <div>
+                            <strong>{{ payment.invoice.student.name }}</strong>
+                            <div class="muted tiny">{{ payment.invoice.title }} • {{ payment.payment_date|date:"Y-m-d" }}</div>
+                        </div>
+                        <div class="inline-actions">
+                            <span class="badge badge-success">{{ payment.amount }}</span>
+                            <span class="badge badge-primary">{{ payment.get_method_display }}</span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-money-bill-wave"></i>
+                        <p>لا توجد دفعات مسجلة بعد.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

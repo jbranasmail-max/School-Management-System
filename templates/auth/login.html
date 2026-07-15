@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>ب
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+    <div class="auth-shell">
+        <div class="auth-card fade-up">
+            <div class="brand" style="color:var(--text); margin-bottom:18px;">
+                <div class="brand-mark"><i class="fa-solid fa-school"></i></div>
+                <div class="brand-copy">
+                    <h1 style="margin:0; color:var(--text)">الدخول إلى النظام</h1>
+                    <p style="color:var(--text-soft)">مدير، محاسب، معلم، ولي أمر. كل دور يرى ما يخصه فقط.</p>
+                </div>
+            </div>
+
+            {% if form.errors %}
+                <div class="alert alert-error">اسم المستخدم أو كلمة المرور غير صحيحين.</div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-layout" style="grid-template-columns:1fr;">
+                    {% for field in form %}
+                        <div class="field-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="form-footer">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        دخول
+                    </button>
+                </div>
+                <div class="form-footer" style="justify-content:center; gap:.75rem; margin-top:1rem;">
+                    <a class="btn btn-secondary" href="{% url 'register' %}">
+                        <i class="fa-solid fa-user-plus"></i>
+                        إنشاء حساب جديد
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

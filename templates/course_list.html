@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}المواد{% endblock %}
+{% block page_title %}إدارة المواد{% endblock %}
+{% block page_subtitle %}ربط المواد بالأساتذة والصفوف والدرجات النهائية وقواعد النجاح داخل واجهة واحدة.{% endblock %}
+
+{% block content %}
+<section class="panel fade-up">
+    <div class="panel-header">
+        <div>
+            <h3 class="panel-title">المواد الدراسية</h3>
+            <p class="panel-subtitle">بطاقات عملية بدل التنقل بين صفحات مبعثرة.</p>
+        </div>
+        <a class="btn btn-primary" href="{% url 'course_create' %}"><i class="fa-solid fa-plus"></i>إضافة مادة</a>
+    </div>
+    <div class="panel-body">
+        <form method="get" class="toolbar">
+            <div class="filters" style="flex:1">
+                <div class="field-group">
+                    <label>بحث</label>
+                    <input type="text" name="q" value="{{ query }}" placeholder="اسم المادة أو رمزها">
+                </div>
+                <div class="field-group">
+                    <button class="btn btn-light" type="submit">بحث</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="stat-grid" style="margin-bottom:18px;">
+            <div class="panel stat-card">
+                <div class="icon"><i class="fa-solid fa-book-open"></i></div>
+                <h4>عدد المواد</h4>
+                <strong>{{ courses|length }}</strong>
+                <p>مواد معرفّة داخل النظام.</p>
+            </div>
+            <div class="panel stat-card">
+                <div class="icon"><i class="fa-solid fa-clock"></i></div>
+                <h4>إجمالي الساعات</h4>
+                <strong>{{ total_hours }}</strong>
+                <p>مجموع الحصص/الساعات المعتمدة.</p>
+            </div>
+        </div>
+
+        <div class="list-stack">
+            {% for course in courses %}
+                <div class="list-item">
+                    <div>
+                        <strong>{{ course.name }}</strong>
+                        <div class="muted tiny">
+                            {{ course.code }} • الصف {{ course.level }} • {{ course.teacher.name|default:"بدون أستاذ" }}
+                        </div>
+                    </div>
+                    <div class="inline-actions">
+                        <span class="badge badge-primary">{{ course.get_course_type_display }}</span>
+                        <span class="badge badge-dark">{{ course.enrolled_count }} طلاب</span>
+                        <span class="badge badge-success">{{ course.assessment_count }} تقييمات</span>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state">
+                    <i class="fa-solid fa-book-open"></i>
+                    <p>لا توجد مواد حتى الآن.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

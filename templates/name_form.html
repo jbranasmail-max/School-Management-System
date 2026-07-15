@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+إضافة اسم
+{% endblock %}
+
+
+{% block content %}
+
+<section class="panel fade-up">
+
+<div class="panel-header">
+<h3 class="panel-title">
+إضافة اسم جديد
+</h3>
+</div>
+
+
+<div class="panel-body">
+
+<form method="post">
+
+{% csrf_token %}
+
+{{ form.as_p }}
+
+
+<button class="btn btn-primary">
+حفظ
+</button>
+
+
+<a class="btn btn-light" href="{% url 'person_create' %}">
+إلغاء
+</a>
+
+
+</form>
+
+</div>
+
+</section>
+
+{% endblock %}
