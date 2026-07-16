@@ -70,25 +70,111 @@
 
 # 📸 صور من النظام
 
-## 🔐 تسجيل الدخول
+## 🏫 نظرة عامة على النظام
 
-![Login](لقطة شاشة 2026-07-15 145839.png)
+![System Overview](system-overview-top.png)
 
-## 📊 لوحة التحكم
+![System Overview Bottom](system-overview-bottom.png)
 
-![Dashboard](لقطة شاشة 2026-07-15 150010.png)
+---
+
+## 👥 إدارة المستخدمين
+
+![Users Management](users-management.png)
+
+---
 
 ## 👨‍🎓 إدارة الطلاب
 
-![Students](لقطة شاشة 2026-07-15 150055.png)
+![Students Management](students-management.png)
+
+---
 
 ## 👨‍🏫 إدارة المعلمين
 
-![Teachers](لقطة شاشة 2026-07-15 150155.png)
+![Teachers Management](teachers-management.png)
+
+---
+
+## 📚 إدارة المواد الدراسية
+
+![Subjects Management](subjects-management.png)
+
+---
 
 ## 📝 الحضور والغياب
 
-![Attendance](لقطة شاشة 2026-07-15 150242.png)
+![Attendance Management](attendance-management.png)
+
+---
+
+## 📊 إدارة الدرجات
+
+![Grades Management](grades-management.png)
+
+---
+
+## 💰 الإدارة المالية
+
+![Financial Management](financial-management.png)
+
+---
+
+# 💻 صور من الكود البرمجي
+
+## 🗄 نماذج قاعدة البيانات Django Models
+
+![Django Models](django-models-code.png)
+
+---
+
+## ⚙️ لوحة إدارة Django Admin
+
+![Django Admin](django-admin-panel.png)
+
+---
+
+## 📝 نماذج الإدخال Django Forms
+
+![Django Forms](django-forms-code.png)
+
+---
+
+## 🎨 قوالب الواجهة Django Templates
+
+![Django Templates](django-template-code.png)
+
+---
+
+## 🎨 تنسيق الواجهة CSS
+
+![Frontend CSS](frontend-css-code.png)
+
+---
+
+## ⚙️ ملف تشغيل Django
+
+![Manage Py](django-manage-py.png)
+
+---
+
+## 🔗 روابط Django URLs
+
+![Django URLs](django-urls-code.png)
+
+---
+
+## 🎨 ملف CSS الخاص بالتطبيق
+
+![App CSS](app-css-code.png)
+
+---
+
+## 🧩 Views في Django
+
+![Django Views](django-views-code.png)
+
+---
 
 # 👨‍💻 المطور
 
